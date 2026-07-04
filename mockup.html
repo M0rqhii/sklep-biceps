@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BICEPS — Sklep z Suplementami</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   CSS VARIABLES — łatwa zmiana kolorów/fontów
+   ═══════════════════════════════════════════ */
+:root {
+  --bg-dark: #0a0a0a;
+  --bg-card: #141414;
+  --bg-card-hover: #1a1a1a;
+  --accent: #e63946;
+  --accent-glow: rgba(230, 57, 70, 0.3);
+  --text-primary: #f1f1f1;
+  --text-secondary: #888;
+  --text-muted: #555;
+  --border: #222;
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body: 'Barlow', sans-serif;
+  --radius: 8px;
+  --max-width: 1280px;
+}
+
+/* ═══════════════════════════════════════════
+   RESET & BASE
+   ═══════════════════════════════════════════ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg-dark);
+  color: var(--text-primary);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+/* ═══════════════════════════════════════════
+   NOISE OVERLAY — texture
+   ═══════════════════════════════════════════ */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ═══════════════════════════════════════════
+   TOP BAR
+   ═══════════════════════════════════════════ */
+.top-bar {
+  background: var(--accent);
+  color: #fff;
+  text-align: center;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* ═══════════════════════════════════════════
+   HEADER / NAV
+   ═══════════════════════════════════════════ */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(10,10,10,0.92);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 70px;
+}
+.logo {
+  font-family: var(--font-display);
+  font-size: 38px;
+  letter-spacing: 4px;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.logo span {
+  color: var(--accent);
+}
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 32px;
+}
+nav a {
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-secondary);
+  transition: color 0.2s;
+  position: relative;
+}
+nav a:hover { color: var(--text-primary); }
+nav a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--accent);
+  transition: width 0.3s;
+}
+nav a:hover::after { width: 100%; }
+
+.nav-icons {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.nav-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  transition: all 0.2s;
+  position: relative;
+}
+.nav-icon:hover {
+  border-color: var(--accent);
+  background: rgba(230,57,70,0.1);
+}
+.cart-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ═══════════════════════════════════════════
+   HERO SECTION
+   ═══════════════════════════════════════════ */
+.hero {
+  position: relative;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse at 70% 50%, rgba(230,57,70,0.15) 0%, transparent 60%),
+    radial-gradient(ellipse at 20% 80%, rgba(230,57,70,0.08) 0%, transparent 50%),
+    var(--bg-dark);
+}
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+.hero-content {
+  position: relative;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  width: 100%;
+}
+.hero-text h1 {
+  font-family: var(--font-display);
+  font-size: clamp(56px, 8vw, 96px);
+  line-height: 0.95;
+  letter-spacing: 3px;
+  margin-bottom: 24px;
+}
+.hero-text h1 em {
+  font-style: normal;
+  color: var(--accent);
+  display: block;
+}
+.hero-text p {
+  font-size: 18px;
+  color: var(--text-secondary);
+  max-width: 440px;
+  margin-bottom: 36px;
+  font-weight: 300;
+}
+.hero-cta {
+  display: flex;
+  gap: 16px;
+}
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  padding: 14px 36px;
+  border-radius: var(--radius);
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  transition: all 0.3s;
+  box-shadow: 0 4px 24px var(--accent-glow);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px var(--accent-glow);
+}
+.btn-outline {
+  background: transparent;
+  color: var(--text-primary);
+  padding: 14px 36px;
+  border-radius: var(--radius);
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  border: 1px solid var(--border);
+  transition: all 0.3s;
+}
+.btn-outline:hover {
+  border-color: var(--accent);
+  background: rgba(230,57,70,0.05);
+}
+
+.hero-visual {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.hero-product-card {
+  width: 340px;
+  height: 440px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  position: relative;
+  transform: rotate(2deg);
+  transition: transform 0.4s;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+.hero-product-card:hover { transform: rotate(0deg) scale(1.02); }
+.hero-product-card .badge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.product-placeholder {
+  width: 160px;
+  height: 220px;
+  background: linear-gradient(135deg, #1e1e1e, #2a2a2a);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+}
+.hero-product-card h3 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  letter-spacing: 2px;
+}
+.hero-product-card .price {
+  color: var(--accent);
+  font-size: 22px;
+  font-weight: 700;
+}
+
+/* ═══════════════════════════════════════════
+   SECTION COMMON
+   ═══════════════════════════════════════════ */
+.section {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 80px 24px;
+}
+.section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 48px;
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: 48px;
+  letter-spacing: 3px;
+}
+.section-title span {
+  color: var(--accent);
+}
+.section-link {
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: gap 0.2s;
+}
+.section-link:hover { gap: 12px; }
+
+/* ═══════════════════════════════════════════
+   CATEGORY STRIP
+   ═══════════════════════════════════════════ */
+.categories {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.cat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 32px 24px;
+  text-align: center;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+.cat-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+}
+.cat-icon {
+  font-size: 40px;
+  margin-bottom: 16px;
+}
+.cat-card h3 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+.cat-card p {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+/* ═══════════════════════════════════════════
+   PRODUCT GRID
+   ═══════════════════════════════════════════ */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+.product-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s;
+  cursor: pointer;
+  position: relative;
+}
+.product-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-6px);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.4);
+}
+.product-img {
+  width: 100%;
+  height: 220px;
+  background: linear-gradient(135deg, #161616, #1e1e1e);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 56px;
+  position: relative;
+}
+.product-tag {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.product-tag.new { background: #2ecc71; }
+.product-wishlist {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.product-card:hover .product-wishlist { opacity: 1; }
+.product-info {
+  padding: 20px;
+}
+.product-brand {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+.product-name {
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+.product-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+}
+.product-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.product-price {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--accent);
+}
+.product-price .old {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-decoration: line-through;
+  font-weight: 400;
+  margin-left: 6px;
+}
+.btn-add {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  box-shadow: 0 4px 16px var(--accent-glow);
+}
+.btn-add:hover {
+  transform: scale(1.1);
+}
+.stars {
+  color: #f9a825;
+  font-size: 12px;
+  margin-bottom: 12px;
+}
+
+/* ═══════════════════════════════════════════
+   BANNER CTA
+   ═══════════════════════════════════════════ */
+.banner {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 60px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+.banner::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, var(--accent-glow), transparent 70%);
+  pointer-events: none;
+}
+.banner h2 {
+  font-family: var(--font-display);
+  font-size: 52px;
+  letter-spacing: 2px;
+  line-height: 1;
+  margin-bottom: 16px;
+  position: relative;
+}
+.banner p {
+  color: var(--text-secondary);
+  font-size: 16px;
+  margin-bottom: 24px;
+  max-width: 400px;
+  position: relative;
+}
+.banner-stats {
+  display: flex;
+  gap: 40px;
+  position: relative;
+}
+.stat h4 {
+  font-family: var(--font-display);
+  font-size: 36px;
+  color: var(--accent);
+  letter-spacing: 1px;
+}
+.stat p {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0;
+}
+
+/* ═══════════════════════════════════════════
+   FEATURES ROW
+   ═══════════════════════════════════════════ */
+.features {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.feature {
+  background: var(--bg-card);
+  padding: 32px 24px;
+  text-align: center;
+}
+.feature-icon {
+  font-size: 28px;
+  margin-bottom: 12px;
+}
+.feature h4 {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+.feature p {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* ═══════════════════════════════════════════
+   NEWSLETTER
+   ═══════════════════════════════════════════ */
+.newsletter {
+  text-align: center;
+  padding: 80px 24px;
+}
+.newsletter h2 {
+  font-family: var(--font-display);
+  font-size: 42px;
+  letter-spacing: 3px;
+  margin-bottom: 12px;
+}
+.newsletter p {
+  color: var(--text-secondary);
+  margin-bottom: 32px;
+}
+.newsletter-form {
+  display: flex;
+  max-width: 480px;
+  margin: 0 auto;
+  gap: 8px;
+}
+.newsletter-form input {
+  flex: 1;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 20px;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.newsletter-form input:focus { border-color: var(--accent); }
+.newsletter-form input::placeholder { color: var(--text-muted); }
+
+/* ═══════════════════════════════════════════
+   FOOTER
+   ═══════════════════════════════════════════ */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 60px 24px 32px;
+}
+.footer-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 48px;
+  margin-bottom: 48px;
+}
+.footer-brand .logo { margin-bottom: 16px; }
+.footer-brand p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  max-width: 300px;
+  line-height: 1.7;
+}
+.footer-col h4 {
+  font-family: var(--font-display);
+  font-size: 18px;
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+}
+.footer-col a {
+  display: block;
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+  transition: color 0.2s;
+}
+.footer-col a:hover { color: var(--accent); }
+.footer-bottom {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.payment-icons {
+  display: flex;
+  gap: 12px;
+  font-size: 20px;
+}
+
+/* ═══════════════════════════════════════════
+   ANIMATIONS
+   ═══════════════════════════════════════════ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.hero-text { animation: fadeUp 0.8s ease-out; }
+.hero-visual { animation: fadeUp 0.8s ease-out 0.15s both; }
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .hero-content { grid-template-columns: 1fr; text-align: center; }
+  .hero-text p { margin: 0 auto 36px; }
+  .hero-cta { justify-content: center; }
+  .hero-visual { display: none; }
+  .product-grid { grid-template-columns: repeat(2, 1fr); }
+  .categories { grid-template-columns: repeat(2, 1fr); }
+  .banner { grid-template-columns: 1fr; text-align: center; padding: 40px 24px; }
+  .banner p { margin: 0 auto 24px; }
+  .banner-stats { justify-content: center; }
+  .footer-inner { grid-template-columns: 1fr 1fr; }
+  .features { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+  .product-grid { grid-template-columns: 1fr; }
+  .categories { grid-template-columns: 1fr; }
+  nav ul { display: none; }
+  .features { grid-template-columns: 1fr; }
+  .footer-inner { grid-template-columns: 1fr; }
+  .newsletter-form { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<!-- ████ TOP BAR ████ -->
+<div class="top-bar">
+  🔥 Darmowa dostawa od 150 zł — Kod: <strong>BICEPS10</strong> = 10% rabatu
+</div>
+
+<!-- ████ HEADER ████ -->
+<header>
+  <div class="nav-inner">
+    <div class="logo">
+      <span>💪</span> BICEP<span>S</span>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="#">Suplementy</a></li>
+        <li><a href="#">Odżywki</a></li>
+        <li><a href="#">Akcesoria</a></li>
+        <li><a href="#">Nowości</a></li>
+        <li><a href="#">Wyprzedaż</a></li>
+      </ul>
+    </nav>
+    <div class="nav-icons">
+      <button class="nav-icon">🔍</button>
+      <button class="nav-icon">👤</button>
+      <button class="nav-icon">
+        🛒
+        <span class="cart-badge">3</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ████ HERO ████ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-text">
+      <h1>PRZEKROCZ<em>SWOJE LIMITY</em></h1>
+      <p>Najwyższej jakości suplementy i odżywki dla sportowców. Osiągnij swój potencjał z markami, którym ufają profesjonaliści.</p>
+      <div class="hero-cta">
+        <button class="btn-primary">Zobacz Bestsellery</button>
+        <button class="btn-outline">Nowa Kolekcja →</button>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-product-card">
+        <span class="badge">Bestseller</span>
+        <div class="product-placeholder">🏋️</div>
+        <h3>WHEY PROTEIN GOLD</h3>
+        <div class="price">129,99 zł</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ████ FEATURES ████ -->
+<div class="section">
+  <div class="features">
+    <div class="feature">
+      <div class="feature-icon">🚚</div>
+      <h4>Darmowa dostawa</h4>
+      <p>Od 150 zł zamówienia</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">⚡</div>
+      <h4>Wysyłka 24h</h4>
+      <p>Zamów do 14:00</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">🔄</div>
+      <h4>30 dni na zwrot</h4>
+      <p>Bez pytań</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">✅</div>
+      <h4>Oryginalne produkty</h4>
+      <p>100% autentyczność</p>
+    </div>
+  </div>
+</div>
+
+<!-- ████ CATEGORIES ████ -->
+<div class="section">
+  <div class="section-header">
+    <h2 class="section-title">KATEGORIE <span>PRODUKTÓW</span></h2>
+    <a href="#" class="section-link">Wszystkie kategorie →</a>
+  </div>
+  <div class="categories">
+    <div class="cat-card">
+      <div class="cat-icon">🥤</div>
+      <h3>BIAŁKO</h3>
+      <p>Whey, Casein, Roślinne</p>
+    </div>
+    <div class="cat-card">
+      <div class="cat-icon">⚡</div>
+      <h3>PRE-WORKOUT</h3>
+      <p>Energia i focus</p>
+    </div>
+    <div class="cat-card">
+      <div class="cat-icon">💊</div>
+      <h3>WITAMINY</h3>
+      <p>Zdrowie i odporność</p>
+    </div>
+    <div class="cat-card">
+      <div class="cat-icon">🏋️</div>
+      <h3>AKCESORIA</h3>
+      <p>Pasy, uchwyty, shaker</p>
+    </div>
+  </div>
+</div>
+
+<!-- ████ PRODUCTS ████ -->
+<div class="section">
+  <div class="section-header">
+    <h2 class="section-title">NAJLEPIEJ <span>SPRZEDAJĄCE SIĘ</span></h2>
+    <a href="#" class="section-link">Wszystkie produkty →</a>
+  </div>
+  <div class="product-grid">
+
+    <div class="product-card">
+      <div class="product-img">
+        <span class="product-tag">-20%</span>
+        <div class="product-wishlist">♡</div>
+        🥤
+      </div>
+      <div class="product-info">
+        <div class="product-brand">Optimum Nutrition</div>
+        <div class="product-name">Gold Standard 100% Whey</div>
+        <div class="stars">★★★★★</div>
+        <div class="product-bottom">
+          <div class="product-price">
+            129,99 zł
+            <span class="old">159,99 zł</span>
+          </div>
+          <button class="btn-add">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img">
+        <span class="product-tag new">Nowość</span>
+        <div class="product-wishlist">♡</div>
+        ⚡
+      </div>
+      <div class="product-info">
+        <div class="product-brand">C4 Original</div>
+        <div class="product-name">Pre-Workout Energy Blast</div>
+        <div class="stars">★★★★☆</div>
+        <div class="product-bottom">
+          <div class="product-price">89,99 zł</div>
+          <button class="btn-add">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img">
+        <div class="product-wishlist">♡</div>
+        💊
+      </div>
+      <div class="product-info">
+        <div class="product-brand">NOW Foods</div>
+        <div class="product-name">Vitamin D3 + K2 Complex</div>
+        <div class="stars">★★★★★</div>
+        <div class="product-bottom">
+          <div class="product-price">49,99 zł</div>
+          <button class="btn-add">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img">
+        <span class="product-tag">-15%</span>
+        <div class="product-wishlist">♡</div>
+        🥜
+      </div>
+      <div class="product-info">
+        <div class="product-brand">MyProtein</div>
+        <div class="product-name">Creatine Monohydrate 500g</div>
+        <div class="stars">★★★★★</div>
+        <div class="product-bottom">
+          <div class="product-price">
+            69,99 zł
+            <span class="old">82,99 zł</span>
+          </div>
+          <button class="btn-add">+</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ████ BANNER ████ -->
+<div class="section">
+  <div class="banner">
+    <div>
+      <h2>DOŁĄCZ DO<br>KLUBU <span style="color:var(--accent)">BICEPS</span></h2>
+      <p>Zarejestruj się i odbieraj punkty za każdy zakup. Wymieniaj je na zniżki, darmowe produkty i ekskluzywne oferty.</p>
+      <button class="btn-primary">Dołącz za darmo</button>
+    </div>
+    <div class="banner-stats">
+      <div class="stat">
+        <h4>15K+</h4>
+        <p>Członków</p>
+      </div>
+      <div class="stat">
+        <h4>500+</h4>
+        <p>Produktów</p>
+      </div>
+      <div class="stat">
+        <h4>4.9★</h4>
+        <p>Ocena klientów</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ████ NEWSLETTER ████ -->
+<div class="newsletter">
+  <h2>BĄDŹ NA <span style="color:var(--accent)">BIEŻĄCO</span></h2>
+  <p>Zapisz się na newsletter — kody rabatowe, nowości i porady treningowe</p>
+  <div class="newsletter-form">
+    <input type="email" placeholder="Twój adres e-mail...">
+    <button class="btn-primary">Zapisz się</button>
+  </div>
+</div>
+
+<!-- ████ FOOTER ████ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo"><span>💪</span> BICEP<span>S</span></div>
+      <p>Twój sklep z suplementami i odżywkami dla sportowców. Oryginalne produkty, szybka wysyłka i najlepsze ceny.</p>
+    </div>
+    <div class="footer-col">
+      <h4>SKLEP</h4>
+      <a href="#">Suplementy</a>
+      <a href="#">Odżywki</a>
+      <a href="#">Witaminy</a>
+      <a href="#">Akcesoria</a>
+      <a href="#">Wyprzedaż</a>
+    </div>
+    <div class="footer-col">
+      <h4>INFORMACJE</h4>
+      <a href="#">O nas</a>
+      <a href="#">Dostawa</a>
+      <a href="#">Zwroty</a>
+      <a href="#">Regulamin</a>
+      <a href="#">Polityka prywatności</a>
+    </div>
+    <div class="footer-col">
+      <h4>KONTAKT</h4>
+      <a href="#">kontakt@biceps.pl</a>
+      <a href="#">+48 123 456 789</a>
+      <a href="#">Instagram</a>
+      <a href="#">Facebook</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 BICEPS. Wszystkie prawa zastrzeżone.</span>
+    <div class="payment-icons">
+      💳 🏦 📱
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
