@@ -4,3 +4,18 @@ node_modules/
 *.log
 dist/
 .DS_Store
+
+# graphify knowledge graph (generated, rebuild with: graphify update .)
+graphify-out/
+
+# AI assistant tooling (local only, not for the public repo)
+.claude/
+CLAUDE.md
+.cursorrules
+.cursor/
+.windsurf/
+.windsurfrules
+AGENTS.md
+GEMINI.md
+.codex/
+.aider*

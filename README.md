@@ -1,5 +1,7 @@
 # 💪 BICEPS — Sklep z Suplementami
 
+Demo/edukacyjny projekt sklepu internetowego z suplementami diety: katalog produktów z filtrowaniem, koszyk, konto użytkownika (JWT) i składanie zamówień. Dane produktów i kont w `backend/src/data.js` są przykładowe (seed), nie produkcyjne — nie jest to gotowa do wdrożenia platforma e-commerce.
+
 ## Stack
 - **Frontend**: Next.js 15 + React 19 + Tailwind CSS 4 + TypeScript
 - **Backend**: Node.js + Express
@@ -11,6 +13,13 @@
 ```bash
 cd backend
 npm install
+```
+Stwórz plik `.env` w `backend/` z sekretem do podpisywania JWT:
+```
+JWT_SECRET=twoj-wlasny-sekret
+PORT=5000
+```
+```bash
 npm run dev    # → http://localhost:5000
 ```
 
