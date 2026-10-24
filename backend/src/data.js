@@ -180,7 +180,7 @@ const users = [
     id: "user_client_1",
     name: "Jan Kowalski",
     email: "klient@biceps.pl",
-    password: "$2b$10$0TkqXB.oDg7meG4i6qHP5OOa61zAAoJszFLrikmEQCvCDahCtwdBS", // klient123
+    password: "$2b$10$0TkqXB.oDg7meG4i6qHP5OOa61zAAoJszFLrikmEQCvCDahCtwdBS",
     role: "user",
     phone: "+48 123 456 789",
     address: "ul. Sportowa 12/3",
@@ -193,7 +193,7 @@ const users = [
     id: "user_admin_1",
     name: "Admin BICEPS",
     email: "admin@biceps.pl",
-    password: "$2b$10$cosInFn8LhrAHjHnVbihyu7clVyc8XAqpzR0pr/vvyW9hK8c48Glu", // admin123
+    password: "$2b$10$cosInFn8LhrAHjHnVbihyu7clVyc8XAqpzR0pr/vvyW9hK8c48Glu",
     role: "admin",
     phone: "+48 600 100 200",
     address: "ul. Siłowa 1",
